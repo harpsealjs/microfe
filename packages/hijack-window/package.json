@@ -1,6 +1,6 @@
 {
   "name": "@harpsealjs/hijack-window",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "micro window hijack",
   "license": "MIT",
   "main": "lib/index.js",

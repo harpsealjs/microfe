@@ -1,6 +1,6 @@
 {
   "name": "@harpsealjs/event",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "functional event",
   "license": "MIT",
   "main": "lib/index.js",

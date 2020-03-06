@@ -1,6 +1,6 @@
 {
   "name": "@harpsealjs/microfe",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "micro framework",
   "license": "MIT",
   "main": "lib/index.js",
@@ -27,12 +27,12 @@
     "npm": ">=8.0.0"
   },
   "dependencies": {
-    "@harpsealjs/event": "^0.0.9",
-    "@harpsealjs/framework": "^0.0.9",
-    "@harpsealjs/hijack-history": "^0.0.9",
-    "@harpsealjs/hijack-timer": "^0.0.9",
-    "@harpsealjs/hijack-window": "^0.0.9",
-    "@harpsealjs/hijack-head": "^0.0.9"
+    "@harpsealjs/event": "^0.0.10",
+    "@harpsealjs/framework": "^0.0.10",
+    "@harpsealjs/hijack-head": "^0.0.10",
+    "@harpsealjs/hijack-history": "^0.0.10",
+    "@harpsealjs/hijack-timer": "^0.0.10",
+    "@harpsealjs/hijack-window": "^0.0.10"
   },
   "publishConfig": {
     "access": "public"
