@@ -27,6 +27,7 @@
     "npm": ">=3.0.0"
   },
   "dependencies": {
+    "deep-equal": "^2.0.1",
     "path-to-regexp": "^6.1.0",
     "ramda": "^0.27.0",
     "ramda-fantasy": "^0.8.0",

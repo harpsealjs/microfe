@@ -1,8 +1,8 @@
-import * as _ from 'ramda';
 import { loadAssets, clearAssets, tagAssets, untagAssets } from './lib/assets';
 import { GLOBAL_PATH } from './lib/constant';
 import matchPath from './lib/matchPath';
 import { ChildEventCallback } from './types';
+import equal from 'deep-equal';
 import {
   Global,
   ChildAppData,
@@ -19,13 +19,13 @@ import {
 export * from './types';
 
 export class FrameworkImpl implements FrameworkAPI {
-  children = [];
+  children: ChildAppData[] = [];
   childNotFound: ChildAppData;
   childError: ChildAppData;
   currentChild: ChildAppData | null;
   global: Global = null;
-  onChildEnter: (child: ChildAppData) => {};
-  onChildLeave: (child: ChildAppData) => {};
+  onChildEnter: ChildEventCallback = () => {};
+  onChildLeave: ChildEventCallback = () => {};
   $root = document.body;
 };
 
@@ -49,7 +49,7 @@ const leaveCurrentChild = (ins: FrameworkImpl): void => {
 };
 
 const renderChild = (child: ChildAppData, ins: FrameworkImpl): FrameworkImpl => {
-  if (_.equals(ins.currentChild, child)) return ins;
+  if (equal(ins.currentChild, child)) return ins;
   leaveCurrentChild(ins);
   clearAssets();
   ins.currentChild = child;
@@ -61,9 +61,18 @@ const clearGlobalData = (): void => {
   delete window[GLOBAL_PATH];
 };
 
-export const register: FrameworkChildChain = (t: ChildAppData) => (ins: FrameworkImpl) => createMonad(_.evolve({ children: _.append(t) }, ins));
-export const registerNotFound: FrameworkChildChain = (t: ChildAppData) => (ins: FrameworkImpl) => createMonad(_.assoc('childNotFound', t, ins));
-export const registerError: FrameworkChildChain = (t: ChildAppData) => (ins: FrameworkImpl) => createMonad(_.assoc('childError', t, ins));
+export const register: FrameworkChildChain = (t: ChildAppData) => (ins: FrameworkImpl) => {
+  ins.children.push(t);
+  return createMonad(ins);
+};
+export const registerNotFound: FrameworkChildChain = (t: ChildAppData) => (ins: FrameworkImpl) => {
+  ins.childNotFound = t;
+  return createMonad(ins);
+};
+export const registerError: FrameworkChildChain = (t: ChildAppData) => (ins: FrameworkImpl) => {
+  ins.childError = t;
+  return createMonad(ins);
+};
 export const root: FrameworkElementChain = (t: HTMLElement) => (ins: FrameworkImpl) => {
   ins.$root = t;
   return createMonad(ins);
@@ -74,8 +83,14 @@ export const setGlobal: FrameworkWindowChain = (t: Window | null) => (ins: Frame
   return createMonad(ins);
 };
 
-export const onChildEnter: FrameworkChildEventChain = (t: ChildEventCallback) => (ins: FrameworkImpl) => createMonad(_.assoc('onChildEnter', t, ins));
-export const onChildLeave: FrameworkChildEventChain = (t: ChildEventCallback) => (ins: FrameworkImpl) => createMonad(_.assoc('onChildLeave', t, ins));
+export const onChildEnter: FrameworkChildEventChain = (t: ChildEventCallback) => (ins: FrameworkImpl) => {
+  ins.onChildEnter = t;
+  return createMonad(ins);
+};
+export const onChildLeave: FrameworkChildEventChain = (t: ChildEventCallback) => (ins: FrameworkImpl) => {
+  ins.onChildLeave = t;
+  return createMonad(ins);
+};
 
 export const exit: FrameworkCommonChain = (ins: FrameworkImpl) => {
   ins.currentChild = null;
@@ -92,7 +107,7 @@ export const start: FrameworkCommonChain = (ins: FrameworkImpl) => {
 };
 
 export const redirect: FrameworkStringChain = (pathname: string) => (ins: FrameworkImpl) => {
-  const child = _.find(i => matchPath(pathname, i), ins.children);
-  renderChild(child, ins);
+  const child = ins.children.find(i => matchPath(pathname, i));
+  child && renderChild(child, ins);
   return createMonad(ins);
 };
