@@ -21,8 +21,8 @@ import {
   setHashType,
   HashType,
   HistoryAPI,
-  pushState,
-  replaceState
+  pushState as historyPushState,
+  replaceState as historyReplaceState
 } from '@harpsealjs/hijack-history';
 import {
   create as createWindow,
@@ -45,6 +45,21 @@ const PLUGINS: Plugin[] = [TimerPlugin, ListenerPlugin, HeadPlugin];
 
 export * from './types';
 
+export function getChildContext(globalSpace: string = GLOBAL_PATH) {
+  if (!window[globalSpace]) return null;
+  return window[globalSpace].getChildContext();
+}
+
+export function pushState(pathname: string, globalSpace: string = GLOBAL_PATH) {
+  if (!window[globalSpace]) return null;
+  return window[globalSpace].pushState(pathname);
+}
+
+export function replaceState(pathname: string, globalSpace: string = GLOBAL_PATH) {
+  if (!window[globalSpace]) return null;
+  return window[globalSpace].replaceState(pathname);
+}
+
 export class Microfe implements MicrofeAPI {
   private ins = createFramework();
   private window = createWindow();
@@ -53,21 +68,6 @@ export class Microfe implements MicrofeAPI {
 
   private plugins: Plugin[] = [...PLUGINS];
   private pluginIns: any[] = [];
-
-  static getChildContext(globalSpace: string = GLOBAL_PATH) {
-    if (!window[globalSpace]) return null;
-    return window[globalSpace].getChildContext();
-  }
-
-  static pushState(pathname: string, globalSpace: string = GLOBAL_PATH) {
-    if (!window[globalSpace]) return null;
-    return window[globalSpace].pushState(pathname);
-  }
-
-  static replaceState(pathname: string, globalSpace: string = GLOBAL_PATH) {
-    if (!window[globalSpace]) return null;
-    return window[globalSpace].replaceState(pathname);
-  }
 
   constructor(plugins = [], globalSpace = GLOBAL_PATH) {
     this.history = this.history
@@ -139,12 +139,12 @@ export class Microfe implements MicrofeAPI {
   }
 
   pushState(pathname: string) {
-    this.history = this.history.chain(pushState(pathname));
+    this.history = this.history.chain(historyPushState(pathname));
     return this;
   }
 
   replaceState(pathname: string) {
-    this.history = this.history.chain(replaceState(pathname));
+    this.history = this.history.chain(historyReplaceState(pathname));
     return this;
   }
 
