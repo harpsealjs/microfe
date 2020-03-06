@@ -1,0 +1,38 @@
+{
+  "name": "@harpsealjs/hijack-listener",
+  "version": "0.0.9",
+  "description": "micro listener hijack",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "watch": "../../node_modules/.bin/tsc --watch",
+    "clean": "rm -rf ./lib && rm -rf ./dist",
+    "build-lib": "../../node_modules/.bin/tsc",
+    "build-dist": "NODE_ENV=production ../../node_modules/.bin/webpack --config ../../scripts/webpack.lib.js",
+    "build": "npm run clean && npm run build-lib && npm run build-dist"
+  },
+  "files": [
+    "dist",
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/harpsealjs/microfe.git"
+  },
+  "bugs": {
+    "url": "https://github.com/harpsealjs/microfe/issues"
+  },
+  "engines": {
+    "npm": ">=3.0.0"
+  },
+  "dependencies": {
+    "ramda": "^0.27.0",
+    "ramda-fantasy": "^0.8.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "homepage": "https://github.com/harpsealjs/microfe",
+  "gitHead": "6defae819cd69550b290ea188894dcaca2c89e0b"
+}

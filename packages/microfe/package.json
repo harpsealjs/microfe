@@ -1,0 +1,42 @@
+{
+  "name": "@harpsealjs/microfe",
+  "version": "0.0.9",
+  "description": "micro framework",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "watch": "../../node_modules/.bin/tsc --watch",
+    "clean": "rm -rf ./lib && rm -rf ./dist",
+    "build-lib": "../../node_modules/.bin/tsc",
+    "build-dist": "NODE_ENV=production ../../node_modules/.bin/webpack --config ../../scripts/webpack.lib.js",
+    "build": "npm run clean && npm run build-lib && npm run build-dist"
+  },
+  "files": [
+    "dist",
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/harpsealjs/microfe.git"
+  },
+  "bugs": {
+    "url": "https://github.com/harpsealjs/microfe/issues"
+  },
+  "engines": {
+    "npm": ">=8.0.0"
+  },
+  "dependencies": {
+    "@harpsealjs/event": "^0.0.9",
+    "@harpsealjs/framework": "^0.0.9",
+    "@harpsealjs/hijack-history": "^0.0.9",
+    "@harpsealjs/hijack-timer": "^0.0.9",
+    "@harpsealjs/hijack-window": "^0.0.9",
+    "@harpsealjs/hijack-head": "^0.0.9"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "homepage": "https://github.com/harpsealjs/microfe",
+  "gitHead": "6defae819cd69550b290ea188894dcaca2c89e0b"
+}
