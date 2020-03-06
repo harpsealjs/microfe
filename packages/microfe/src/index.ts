@@ -69,7 +69,7 @@ export class Microfe implements MicrofeAPI {
   private plugins: Plugin[] = [...PLUGINS];
   private pluginIns: any[] = [];
 
-  constructor(plugins = [], globalSpace = GLOBAL_PATH) {
+  constructor(plugins: Plugin[] = [], globalSpace = GLOBAL_PATH) {
     this.history = this.history
       .chain(setPush((url: string, state: any) => {
         this.ins = this.ins.chain(redirect(url));
