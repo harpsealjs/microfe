@@ -1,6 +1,6 @@
 {
   "name": "@harpsealjs/hijack-history",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "micro history hijack",
   "license": "MIT",
   "main": "lib/index.js",

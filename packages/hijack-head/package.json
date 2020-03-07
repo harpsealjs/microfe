@@ -1,6 +1,6 @@
 {
   "name": "@harpsealjs/hijack-head",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "micro head hijack",
   "license": "MIT",
   "main": "lib/index.js",
