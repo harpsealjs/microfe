@@ -32,7 +32,8 @@
     "@harpsealjs/hijack-head": "^0.0.10",
     "@harpsealjs/hijack-history": "^0.0.10",
     "@harpsealjs/hijack-timer": "^0.0.10",
-    "@harpsealjs/hijack-window": "^0.0.10"
+    "@harpsealjs/hijack-window": "^0.0.10",
+    "@harpsealjs/hijack-listener": "^0.0.10"
   },
   "publishConfig": {
     "access": "public"

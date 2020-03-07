@@ -40,7 +40,7 @@ app
     ]
   })
   .register({
-     title: 'Child APP 3',
+    title: 'Child APP 3',
     assets: [
       '/my/child/app/3.js',
       '/my/child/app/3.css'
