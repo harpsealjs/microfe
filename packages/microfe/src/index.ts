@@ -45,21 +45,49 @@ const PLUGINS: Plugin[] = [TimerPlugin, ListenerPlugin, HeadPlugin];
 
 export * from './types';
 
+
+/**
+ * Get render context of child application
+ *
+ * @export
+ * @param {string} globalSpace Global space of host application
+ * @returns
+ */
 export function getChildContext(globalSpace: string = GLOBAL_PATH) {
   if (!window[globalSpace]) return null;
   return window[globalSpace].getChildContext();
 }
-
+/**
+ * Redirect like history.pushState
+ *
+ * @export
+ * @param {string} pathname Target path
+ * @param {string} globalSpace Global space of host application
+ * @returns
+ */
 export function pushState(pathname: string, globalSpace: string = GLOBAL_PATH) {
   if (!window[globalSpace]) return null;
   return window[globalSpace].pushState(pathname);
 }
-
+/**
+ * Redirect like history.replaceState
+ *
+ * @export
+ * @param {string} pathname Target path
+ * @param {string} globalSpace Global space of host application
+ * @returns
+ */
 export function replaceState(pathname: string, globalSpace: string = GLOBAL_PATH) {
   if (!window[globalSpace]) return null;
   return window[globalSpace].replaceState(pathname);
 }
-
+/**
+ * Host application
+ *
+ * @export
+ * @class Microfe
+ * @implements {MicrofeAPI}
+ */
 export class Microfe implements MicrofeAPI {
   private ins = createFramework();
   private window = createWindow();
@@ -69,6 +97,13 @@ export class Microfe implements MicrofeAPI {
   private plugins: Plugin[] = [...PLUGINS];
   private pluginIns: any[] = [];
 
+
+  /**
+   * Create host application
+   * @param {Plugin[]} [plugins=[]] Custom hijack plugins
+   * @param {*} globalSpace Global space
+   * @memberof Microfe
+   */
   constructor(plugins: Plugin[] = [], globalSpace = GLOBAL_PATH) {
     this.history = this.history
       .chain(setPush((url: string, state: any) => {
@@ -99,6 +134,9 @@ export class Microfe implements MicrofeAPI {
     this._pluginChain('create');
   }
 
+  /**
+  * @hidden
+  */
   _pluginChain(method: string, ...args: any[]) {
     this.plugins.forEach((plugin, idx) => {
       let fn = plugin[method];
@@ -111,49 +149,107 @@ export class Microfe implements MicrofeAPI {
       this.pluginIns[idx] = fn(...args);
     });
   }
-
+  
+  /**
+   * Hash mode type
+   * - false：browser history mode
+   * - 'slash'：`#/{path}`
+   * - 'noslash'：`#{path}`
+   * - 'hashbang'：`#!/{path}`
+   * @param {HashType} mode Hash mode type
+   * @returns
+   * @memberof Microfe
+   */
   setHashType(mode: HashType) {
     this.history = this.history.chain(setHashType(mode));
     return this;
   }
-
+  /**
+   * Add event listener
+   *
+   * @param {string} action Event name
+   * @param {EventListener} callback Event callback
+   * @returns
+   * @memberof Microfe
+   */
   on(action: string, callback: EventListener) {
     this.event = this.event.chain(on(action, callback));
     return this;
   }
-
+  /**
+   * Remove event listener
+   *
+   * @param {string} action Event name
+   * @param {EventListener} callback Event callback
+   * @returns
+   * @memberof Microfe
+   */
   off(action: string, callback: EventListener) {
     this.event = this.event.chain(off(action, callback));
     return this;
   }
-
+  /**
+   * Register child application
+   *
+   * @param {ChildAppData} childApp Child application data
+   * @returns
+   * @memberof Microfe
+   */
   register(childApp: ChildAppData) {
     this.ins = this.ins.chain(register(childApp));
     this.event = this.event.chain(emit('APP_REGISTER', [childApp]));
     return this;
   }
-
+  /**
+   * Root element where child application mount
+   *
+   * @param {HTMLElement} dom Root element
+   * @returns
+   * @memberof Microfe
+   */
   root(dom: HTMLElement) {
     this.ins = this.ins.chain(root(dom));
     return this;
   }
-
+  /**
+   * Redirect like history.pushState
+   *
+   * @param {string} pathname Target path
+   * @returns
+   * @memberof Microfe
+   */
   pushState(pathname: string) {
     this.history = this.history.chain(historyPushState(pathname));
     return this;
   }
-
+  /**
+   * Redirect like history.replaceState
+   *
+   * @param {string} pathname Target path
+   * @returns
+   * @memberof Microfe
+   */
   replaceState(pathname: string) {
     this.history = this.history.chain(historyReplaceState(pathname));
     return this;
   }
-
+  /**
+   * Clear child application assets manually
+   *
+   * @returns
+   * @memberof Microfe
+   */
   clear() {
     this.window = this.window.chain(clearWindow);
     this._pluginChain('clear');
     return this;
   }
-
+  /**
+   * Start host application and hijack the global runtime
+   *
+   * @returns
+   * @memberof Microfe
+   */
   start() {
     this.history = this.history.chain(hijackHistory);
     this.window = this.window.chain(hijackWindow);
@@ -167,7 +263,12 @@ export class Microfe implements MicrofeAPI {
     this.event = this.event.chain(emit('APP_START', []));
     return this;
   }
-
+  /**
+   * Exit host application and restore the global runtime
+   *
+   * @returns
+   * @memberof Microfe
+   */
   exit() {
     this.history = this.history.chain(unhijackHistory);
     this.window = this.window.chain(unhijackWindow);
@@ -178,6 +279,12 @@ export class Microfe implements MicrofeAPI {
     return this;
   }
 
+  /**
+   * Get render context of child application
+   *
+   * @returns {ChildContext}
+   * @memberof Microfe
+   */
   getChildContext(): ChildContext {
     const ins = this.ins.get() as FrameworkAPI;
     const history = this.history.get() as HistoryAPI

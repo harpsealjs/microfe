@@ -93,53 +93,8 @@ export default function (props) {
 }
 ```
 
-## API
+## Documentation
 
-### Methods
-
-Microfe Instance Methods
-
-```js
-interface MicrofeAPI {
-  constructor(plugins: Plugin[], globalSpace: string); // plugins for custom hijack, globalSpace for custom namespace
-  on(action: string, callback: EventListener): this;
-  off(action: string, callback: EventListener): this;
-  pushState(pathname: string, state: any): this; // jump to a path, like history.pushState
-  replaceState(pathname: string, state: any): this; // jump to a path, like history.repalceState
-  register(child: ChildAppData): this; // register child apps
-  root(dom: HTMLElement): this; // set the child app mount root element
-  start(): this; // start host app and snapshot the global environment
-  exit(): this; // exit host app and restore the global environment
-  clear(): this; // clear child app side effects manually
-};
-
-type Chainable = {chain: (...args: any[]) => Chainable};
-
-interface Plugin {
-  create: () => Chainable,
-  hijack?: () => Chainable,
-  clear?: () => Chainable,
-  unhijack?: () => Chainable,
-  setGlobal?: (global: Window | null) => () => Chainable
-};
-```
-
-### Functions
-
-Global Functions
-
-```js
-interface ChildContext {
-  root: HTMLElement | null, // 
-  base: string | null | undefined,
-  hashType: HashType,
-  onAppLeave(cb: EventListener): void
-};
-
-getChildContext(globalSpace: string = GLOBAL_PATH): ChildContext;
-pushState(pathname: string, globalSpace: string = GLOBAL_PATH): void;
-replaceState(pathname: string, globalSpace: string = GLOBAL_PATH): void;
-```
 
 ## License
 
