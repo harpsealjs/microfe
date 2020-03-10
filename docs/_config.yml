@@ -1,4 +1,2 @@
 theme: jekyll-theme-cayman
-include:
-  - "_*_.html"
-  - "_*_.*.html"
+includes_dir: code
