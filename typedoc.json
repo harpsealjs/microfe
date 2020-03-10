@@ -1,6 +1,6 @@
 {
   "mode": "modules",
-  "out": "docs",
+  "out": "docs/code",
   "exclude": ["**/node_modules/**", "**/*.d.ts"],
   "plugin": "typedoc-plugin-lerna-packages",
   "name": "Microfe",
