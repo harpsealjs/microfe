@@ -95,6 +95,7 @@ export default function (props) {
 
 ## Documentation
 
+[See here](https://harpsealjs.github.io/microfe/code/modules/_harpsealjs_microfe.html)
 
 ## License
 
